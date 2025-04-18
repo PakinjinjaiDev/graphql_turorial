@@ -1,0 +1,17 @@
+# Node.js modules
+node_modules/
+# Logs
+*.log
+# Environment files
+.env
+# VSCode config files
+.vscode/
+# MacOS system files
+.DS_Store
+# npm package-lock file (ถ้าไม่ต้องการติดตาม)
+package-lock.json
+# Coverage directory (ถ้าใช้สำหรับการทดสอบ)
+coverage/
+# Build or output directories
+dist/
+build/
