@@ -1,0 +1,31 @@
+# หากใช้งาน Database จากเครื่องภายนอก(เช่น บนเซิร์ฟเวอร์ภายนอก, cloud, หรือ VM อื่นๆ)
+# ไม่ได้สร้าง Database จาก docker ไว้ภายในเครื่องตัวเอง
+# สามารถที่จะลบในส่วนของ environment: ออกได้ และใช้งานเพียง env_file:
+# บน Linux host.docker.internal อาจใช้ไม่ได้ ให้ใช้ bridge network หรือระบุ IP แทน ❗
+# host.docker.internal use on (Windows/Mac)
+services:
+  graphql-api:
+    build: .
+    image: graphql-api
+    container_name: graphql-api
+    ports:
+      - "3000:3000"  # ให้สามารถเข้าถึง GraphQL ได้จาก localhost:3000
+    environment:
+      - NODE_ENV=development
+      - MSSQL_HOST=host.docker.internal  # เชื่อมต่อกับ MSSQL Container ที่รันอยู่
+      - MSSQL_PORT=1433
+      - MSSQL_DB=db_graphql
+      - MSSQL_USER=sa
+      - MSSQL_PASSWORD=Pakin281244
+      - MYSQL_HOST=host.docker.internal  # เชื่อมต่อกับ MySQL Container ที่รันอยู่
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DB=db_graphql
+    env_file:
+      - .env
+    volumes:
+      - graphql_api_modules:/app/node_modules  # ไม่ให้ node_modules จากเครื่อง host ทับของ Container
+    restart: always
+volumes:
+  graphql_api_modules:  # ✅ กำหนด Named Volume ให้กับ node_modules
